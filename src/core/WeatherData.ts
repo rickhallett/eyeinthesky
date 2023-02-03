@@ -9,18 +9,24 @@ export interface Display {
 interface Subject {
   registerObserver: (observer: Observer) => void;
   updateObservers: () => void;
-  setWeatherData: (temp: number, airPressure: number) => void;
+  setWeatherData: (
+    temperature: number,
+    windDirection: number,
+    windSpeed: number
+  ) => void;
 }
 
 export class WeatherData implements Subject {
   private observers: Observer[];
   private temp: number;
-  private airPressure: number;
+  private windDirection: number;
+  private windSpeed: number;
 
   constructor() {
     this.observers = new Array<Observer>();
     this.temp = 0;
-    this.airPressure = 0;
+    this.windDirection = 0;
+    this.windSpeed = 0;
   }
 
   registerObserver(observer: Observer): void {
@@ -33,18 +39,23 @@ export class WeatherData implements Subject {
     }
   }
 
-  setWeatherData(temp: number, airPressure: number): void {
-    this.temp = temp;
-    this.airPressure = airPressure;
+  setWeatherData(
+    temperature: number,
+    windDirection: number,
+    windSpeed: number
+  ): void {
+    this.temp = temperature;
+    this.windDirection = windDirection;
+    this.windSpeed = windSpeed;
 
     this.updateObservers();
   }
 
-  get temperature() {
-    return this.temp;
-  }
-
-  get pressure() {
-    return this.airPressure;
+  get data() {
+    return {
+      temperature: this.temp,
+      windDirection: this.windDirection,
+      windSpeed: this.windSpeed,
+    };
   }
 }

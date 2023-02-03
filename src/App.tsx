@@ -3,8 +3,11 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 
 import { WeatherStation } from "./core/WeatherStation";
+import { HTMLDisplay } from "./core/HTMLDisplay";
 
 const weatherStation = new WeatherStation();
+
+// setInterval(() => weatherStation.broadcast(), 5000);
 
 function App() {
   const [count, setCount] = useState(0);
@@ -31,6 +34,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <HTMLDisplay />
     </div>
   );
 }
