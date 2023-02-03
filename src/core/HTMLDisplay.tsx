@@ -1,34 +1,37 @@
 import React, { isValidElement } from "react";
 import { WeatherData, Display, Observer } from "./WeatherData";
 
-export class HTMLDisplay extends React.Component implements Observer, Display {
+export class HTMLDisplay implements Observer, Display {
   private weatherData: WeatherData;
+  public reactComponent: any;
 
   constructor(weatherData: WeatherData) {
-    super(weatherData);
     this.weatherData = weatherData;
-    this.state = { mounted: false, temperature: 0 };
-  }
 
-  componentDidMount(): void {
-    //TODO: bug -> doesn't set mounted to true, so we never update temp
-    this.setState({ mounted: true });
+    class ReactDisplay extends React.Component<{}, { temperature: number }> {
+      constructor(props: any) {
+        super(props);
+        this.state = { temperature: 0 };
+      }
+
+      render(): React.ReactNode {
+        console.log({ reactState: this.state });
+        return <div>Temperature: {this.state.temperature}</div>;
+      }
+    }
+
+    this.reactComponent = ReactDisplay;
   }
 
   update(): void {
-    console.log({ updateReactState: this.state });
-    if (this.state.mounted) {
-      this.setState({ temperature: this.weatherData.data.temperature });
-      this.display();
-    }
+    this.reactComponent.setState({
+      temperature: this.weatherData.data.temperature,
+    });
+
+    this.display();
   }
 
   display(): void {
-    this.render();
-  }
-
-  render(): React.ReactNode {
-    console.log({ reactState: this.state });
-    return <div>Temperature: {this.state.temperature}</div>;
+    this.reactComponent.render();
   }
 }

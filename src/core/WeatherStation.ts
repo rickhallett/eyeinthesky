@@ -7,14 +7,15 @@ const apiUrl =
 
 export class WeatherStation {
   public weatherData: WeatherData;
-  private displays: Observer[];
+  public displays: Observer[];
+
+  public reactDisplay: React.Component;
 
   constructor() {
     this.weatherData = new WeatherData();
-    this.displays = [
-      new ConsoleDisplay(this.weatherData),
-      new HTMLDisplay(this.weatherData),
-    ];
+    const htmlDisplay = new HTMLDisplay(this.weatherData);
+    this.displays = [new ConsoleDisplay(this.weatherData), htmlDisplay];
+    this.reactDisplay = htmlDisplay.reactComponent;
 
     this.registerDisplays();
     this.broadcast();
