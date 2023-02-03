@@ -9,13 +9,12 @@ export class WeatherStation {
   public weatherData: WeatherData;
   public displays: Observer[];
 
-  public reactDisplay: React.Component;
-
   constructor() {
     this.weatherData = new WeatherData();
-    const htmlDisplay = new HTMLDisplay(this.weatherData);
-    this.displays = [new ConsoleDisplay(this.weatherData), htmlDisplay];
-    this.reactDisplay = htmlDisplay.reactComponent;
+    this.displays = [
+      new ConsoleDisplay(this.weatherData),
+      new HTMLDisplay(this.weatherData),
+    ];
 
     this.registerDisplays();
     this.broadcast();
@@ -27,19 +26,23 @@ export class WeatherStation {
     }
   }
 
-  async broadcast(): Promise<void> {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    const {
-      current_weather: {
-        temperature,
-        time,
-        weathercode,
-        winddirection,
-        windspeed,
-      },
-    } = data;
-
-    this.weatherData.setWeatherData(temperature, winddirection, windspeed);
+  broadcast() {
+    this.weatherData.setWeatherData(Date.now(), Date.now(), Date.now());
   }
+
+  // async broadcast(): Promise<void> {
+  //   const response = await fetch(apiUrl);
+  //   const data = await response.json();
+  //   const {
+  //     current_weather: {
+  //       temperature,
+  //       time,
+  //       weathercode,
+  //       winddirection,
+  //       windspeed,
+  //     },
+  //   } = data;
+
+  //   this.weatherData.setWeatherData(temperature, winddirection, windspeed);
+  // }
 }

@@ -15,6 +15,6 @@ export class ConsoleDisplay implements Observer, Display {
   }
 
   display() {
-    console.log({ weatherData: this.data });
+    console.log("ConsoleDisplay:", { weatherData: this.data });
   }
 }
